@@ -40,21 +40,6 @@ shotgun_menus = tank.platform.import_framework(
     "shotgun_menus",
 )
 
-exclude_steps = ['cdl',
-                 'color_bundle',
-                 'geocache',
-                 'cutref',
-                 'lens_grid',
-                 'hub',
-                 'vendor',
-                 'camera',
-                 'dev',
-                 'lut',
-                 'macro',
-                 'livegroup',
-                 'high res qc',
-                 'neutralgrade']
-
 
 class PopupUtils(QtCore.QObject):
 
@@ -604,10 +589,7 @@ class PopupUtils(QtCore.QObject):
 
     def get_pipeline_steps_with_model(self):
         step_filters = [['entity_type', 'is', 'Shot' ]]
-
-        for step in exclude_steps:
-            step_filters.append(['code', 'is_not', step])
-
+        step_filters.append(['sg_hide_from_sg_review', 'is_not', True])
         step_fields = ['code', 'list_order', 'short_name', 'id', 'cached_display_name']
         step_orders = [ {'field_name': 'list_order', 'direction': 'desc'} ]
         self._steps_model.load_data(entity_type="Step", filters=step_filters, fields=step_fields, order=step_orders)
