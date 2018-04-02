@@ -265,12 +265,7 @@ class TrayMainFrame(QtGui.QFrame):
     def _show_version_search(self, q_point):
         version_search_widget = version_search.VersionSearchMenu(self)
 
-        version_search_widget.setStyleSheet("QTreeView { color: rgb(255, 0, 0) } "
-                                            "QTreeView::item {color: rgb(0, 255, 0) }"
-                                            "QTreeView::item::open {color: rgb(255, 0, 0) }"
-                                            "QTreeView::item:selected:!active {color: rgb(255, 0, 0) }"
-                                            "QTreeView::item:selected:active {color: rgb(255, 0, 0) }"
-                                            "QTreeView::item:has-children {color: rgb(255, 0, 0)} "
-                                            "QTreeView::branch {color: rgb(0, 255, 0) }")
+        version_search_widget.setStyleSheet("QTreeView { color: rgb(125, 126, 127) } "
+                                            "QTreeView::item {color: rgb(125, 126, 127) }")
 
         version_search_widget.exec_(QtGui.QCursor.pos())
