@@ -266,7 +266,7 @@ class TrayMainFrame(QtGui.QFrame):
         version_search_widget = version_search.VersionSearchMenu(self)
 
         version_search_widget.setStyleSheet("QTreeView { color: rgb(255, 0, 0) } "
-                                            "QTreeView::item {color: rgb(255, 0, 0) }"
+                                            "QTreeView::item {color: rgb(0, 255, 0) }"
                                             "QTreeView::item::open {color: rgb(255, 0, 0) }"
                                             "QTreeView::item:selected:!active {color: rgb(255, 0, 0) }"
                                             "QTreeView::item:selected:active {color: rgb(255, 0, 0) }"
