@@ -1,11 +1,11 @@
 # Copyright (c) 2016 Shotgun Software Inc.
-# 
+#
 # CONFIDENTIAL AND PROPRIETARY
-# 
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 # Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your 
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 from tank.platform.qt import QtCore, QtGui
@@ -20,12 +20,12 @@ class MiniCutWidget(QtGui.QDockWidget):
         # NOTE: when the dock pops out its parent window
         # the parent changes to a new ad-hoc native window.
         # we need to reparent to the new window and be able
-        # to return when docked. we call setParent when we 
+        # to return when docked. we call setParent when we
         # reveal this widget from the calling class so that
         # it will be placed properly before it appears.
         if not window:
             window = parent._rv_mode._app.engine.get_dialog_parent()
-        QtGui.QDockWidget.__init__(self, "MiniCut", window) 
+        QtGui.QDockWidget.__init__(self, "MiniCut", window)
 
         self._window = window
         self._tray = parent
@@ -109,15 +109,15 @@ class MiniCutWidget(QtGui.QDockWidget):
 
         self.widget.setMinimumSize(s)
         self.setMinimumSize(s)
- 
+
     def position_minicut(self):
 
         p = self._tray.tray_mini_label.pos()
         s = self._mini_button.size()
         y = s.height() + p.y() + 15
-        
+
         p2 = QtCore.QPoint( p.x() - 100, y)
-        
+
         self.move(p2)
         self.raise_()
 

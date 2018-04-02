@@ -44,7 +44,7 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
         #     alpha_data.append(127)
         # self._alpha_bitmap = QtGui.QBitmap.fromData(self._alpha_size, bytearray(alpha_data))
         # self._alpha_brush = QtGui.QBrush(QtGui.QColor(0,0,0,64))
-                   
+
     def _handle_entered(self, index):
         # print "ITEM ENTERED: %r" % index
         pass
@@ -62,7 +62,7 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
         # print "DOUBLE CLICK on ITEM %r" % action
         cur_index = self.tray_view.selectionModel().currentIndex()
         (_, item, model) = self._source_for_index(cur_index)
-        
+
         d = item.data(self._RV_DATA_ROLE)
         if d:
                 d['rv_dbl_clicked'] = True
@@ -77,13 +77,17 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
         # model.layoutChanged.emit()
 
     def _handle_clicked(self, action=None):
-            
+
         # figure out current index when it gets more complixated....
         cur_index = self.tray_view.selectionModel().currentIndex()
         (_, item, model) = self._source_for_index(cur_index)
-        
+
         d = { 'rv_cut_selected': item.row() }
         item.setData(d, self._RV_DATA_ROLE)
+
+        print 'handle clicked!!'
+        print 'item:', item
+
         # self.tray_view.selectionModel().clear()
         #self.tray_view.model().invalidate()
         #self.tray_view.update(action)
@@ -125,9 +129,9 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
     def _on_before_paint(self, widget, model_index, style_options, selected=False):
         """
         Called when a cell is being painted.
-        """   
-        # get the shotgun query data for this model item     
-        sg_item = shotgun_model.get_sg_data(model_index) 
+        """
+        # get the shotgun query data for this model item
+        sg_item = shotgun_model.get_sg_data(model_index)
 
         icon = self.choose_thumbnail(model_index)
         if not icon:
@@ -145,7 +149,7 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
 
         if self.tray_view.selectionModel().isSelected(model_index):
             selected = True
-        
+
         widget.set_selected(selected, in_mini_cut)
 
     def _on_before_selection(self, widget, model_index, style_options):
@@ -155,8 +159,8 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
         # do std drawing first
         # this never happens ....
         # print "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&_on_before_selection"
-        self._on_before_paint(widget, model_index, style_options, selected=True)        
-        widget.set_selected(True)  
+        self._on_before_paint(widget, model_index, style_options, selected=True)
+        widget.set_selected(True)
         widget.setStyleSheet("{border: 2px solid #ff0000;}")
 
     def update_rv_role(self, index, entity):
@@ -180,10 +184,10 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
         :type selected:     :class:`~PySide.QtGui.QItemSelection`
         :param deselected:  A list of the indexes in the model that were deselected
         :type deselected:  :class:`~PySide.QtGui.QItemSelection`
-        """  
-                    
+        """
+
         indexes = selected.indexes()
-         
+
 
     # works but not useful?
     def _on_current_changed(self, current_index, previous_index):
@@ -205,7 +209,7 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
         filter_tn = model_index.data(self._FILTER_THUMBNAIL)
 
         # for performance reasons, we are not creating a widget every time
-        # but merely moving the same widget around. 
+        # but merely moving the same widget around.
         paint_widget = self._get_painter_widget(model_index, self.parent())
         if not paint_widget:
             # just paint using the base implementation:
@@ -216,7 +220,7 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
         # it'll appear in the wrong place!
         paint_widget.setVisible(False)
 
-        # call out to have the widget set the right values            
+        # call out to have the widget set the right values
         self._on_before_paint(paint_widget, model_index, style_options)
 
         # now paint!
@@ -225,16 +229,16 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
             paint_widget.resize(style_options.rect.size())
             painter.translate(style_options.rect.topLeft())
             # note that we set the render flags NOT to render the background of the widget
-            # this makes it consistent with the way the editor widget is mounted inside 
+            # this makes it consistent with the way the editor widget is mounted inside
             # each element upon hover.
 
-            paint_widget.render(painter, 
+            paint_widget.render(painter,
                                       QtCore.QPoint(0,0),
                                       renderFlags=QtGui.QWidget.DrawChildren)
 
             if self.tray_view.rv_mode.index_is_pinned(model_index.row()):
                 painter.drawPixmap(paint_widget.width() - self.pin_pixmap.width(), 0, self.pin_pixmap)
- 
+
             if not sg_item.get('version.Version.id') and not sg_item.get('image') and not sg_item.get('cut.Cut.version.Version.image'):
                 target = QtCore.QRectF(0.0, 0.0, paint_widget.width(), paint_widget.height() )
                 source = QtCore.QRectF(0, 0, self.missing_pixmap.width(), self.missing_pixmap.height())
