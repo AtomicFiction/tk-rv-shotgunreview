@@ -1,19 +1,19 @@
 /*
 Copyright (c) 2015 Shotgun Software Inc.
- 
+
 CONFIDENTIAL AND PROPRIETARY
- 
-This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+
+This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 Source Code License included in this distribution package. See LICENSE.
-By accessing, using, copying or modifying this work you indicate your 
-agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+By accessing, using, copying or modifying this work you indicate your
+agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 not expressly granted therein are reserved by Shotgun Software Inc.
 */
 
-QWidget { 
-    font-family: Proxima Nova; 
-    background: rgb(37,38,41); 
-    color: rgb(126,127,129); 
+QWidget {
+    font-family: Proxima Nova;
+    background: rgb(37,38,41);
+    color: rgb(126,127,129);
     border-color: rgb(37,38,41);
     margin: 0px;
     padding: 0px;
@@ -83,6 +83,10 @@ QToolButton#more_fields_button:menu-indicator, QToolButton#version_fields_button
 
 #version_sort_menu QLabel, #related_cuts_menu QLabel {
     background-color: rgb(50, 50, 50);
+}
+
+QMenu::item {
+    color: rgb(125,126,127);
 }
 
 

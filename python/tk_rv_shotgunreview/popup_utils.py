@@ -309,6 +309,7 @@ class PopupUtils(QtCore.QObject):
             self._related_cuts_menu.setObjectName("related_cuts_menu")
             self._tray_frame.tray_button_browse_cut.setMenu(self._related_cuts_menu)
 
+            '''
             # Sadly, because this button didn't have a menu at the time that
             # the app-level styling was applied, it won't inherit menu-indicator
             # styling there. We have to set it here as a result.
@@ -323,6 +324,7 @@ class PopupUtils(QtCore.QObject):
                     }
                 """
             )
+            '''
             self._related_cuts_menu.triggered.connect(self.handle_related_menu)
         else:
             # if we have a menu, and target_entity is None, then we are moving from
@@ -484,6 +486,7 @@ class PopupUtils(QtCore.QObject):
             self._status_menu.setObjectName("status_menu")
             self._tray_frame.status_filter_button.setMenu(self._status_menu)
 
+            '''
             # Sadly, because this button didn't have a menu at the time that
             # the app-level styling was applied, it won't inherit menu-indicator
             # styling there. We have to set it here as a result.
@@ -498,6 +501,7 @@ class PopupUtils(QtCore.QObject):
                     }
                 """
             )
+            '''
             self._status_menu.triggered.connect(self.handle_status_menu)
 
         # theres nothing we can do without getting a project entity.
@@ -605,6 +609,7 @@ class PopupUtils(QtCore.QObject):
             self._pipeline_steps_menu.setObjectName("pipeline_steps_menu")
             self._tray_frame.pipeline_filter_button.setMenu(self._pipeline_steps_menu)
 
+            '''
             # Sadly, because this button didn't have a menu at the time that
             # the app-level styling was applied, it won't inherit menu-indicator
             # styling there. We have to set it here as a result.
@@ -619,6 +624,7 @@ class PopupUtils(QtCore.QObject):
                     }
                 """
             )
+            '''
             self._pipeline_steps_menu.triggered.connect(self.handle_pipeline_menu)
 
         menu = self._pipeline_steps_menu

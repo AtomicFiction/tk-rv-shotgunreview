@@ -26,7 +26,7 @@ class TrayModel(ShotgunModel):
 
     def __init__(self, parent, bg_task_manager=None, engine=None):
 
-        ShotgunModel.__init__(self, 
+        ShotgunModel.__init__(self,
                   parent = parent,
                   download_thumbs = True,
                   schema_generation = 0,
@@ -38,7 +38,7 @@ class TrayModel(ShotgunModel):
 
         # this holds alternate version data
         self._RV_DATA_ROLE = QtCore.Qt.UserRole + 1138
-        
+
         # this is actual pixmap data - XXX do we need it?
         self._CUT_THUMB_ROLE = QtCore.Qt.UserRole + 1701
 
@@ -73,7 +73,7 @@ class TrayModel(ShotgunModel):
         self._version_order = version_ids
 
     def clear_pinned_items(self):
-        self._pinned_items = {}        
+        self._pinned_items = {}
 
     def update_pinned_items(self, pinned_list):
         loop_dict = pinned_list
@@ -107,11 +107,11 @@ class TrayModel(ShotgunModel):
 
 
     def set_pinned_items(self, pinned_list):
- 
+
         loop_dict = pinned_list
         if not pinned_list:
             loop_dict = self._pinned_items
- 
+
         for shot_key in loop_dict.keys():
             rows = self.rowCount()
             for x in range(0, rows):
@@ -160,12 +160,12 @@ class TrayModel(ShotgunModel):
             return
 
         shot_id = int(version_data.keys()[0])
- 
+
         rows = self.rowCount()
         for x in range(0, rows):
             index = self.index(x, 0)
             sg = shotgun_model.get_sg_data(index)
- 
+
             orig_path = index.data(self._ORIGINAL_THUMBNAIL)
             pinned_path = index.data(self._PINNED_THUMBNAIL)
             filtered_path = index.data(self._FILTER_THUMBNAIL)
@@ -174,13 +174,13 @@ class TrayModel(ShotgunModel):
                 path = pinned_path
             if filtered_path and not pinned_path:
                 path = filtered_path
- 
+
             image_dict = {}
 
             if sg['type'] == "Version" and 'entity' in sg and sg['entity']:
                 if shot_id == sg['entity']['id']:
                     self._pinned_items[str(shot_id)] = path
- 
+
             if sg['type'] == "CutItem":
                 if 'shot' in sg and sg['shot']:
                     if shot_id == sg['shot']['id']:
@@ -224,7 +224,7 @@ class TrayModel(ShotgunModel):
                 if sg['shot'] and sg['shot']['id'] == shot['id']:
                     t_item = self.itemFromIndex(m_idx)
                     if not image:
-                        # we have no image, then revert to the one we stored on load 
+                        # we have no image, then revert to the one we stored on load
                         thumb = m_idx.data(self._CUT_THUMB_ROLE)
                         t_item.setIcon(thumb)
                     else:
@@ -336,7 +336,7 @@ class TrayModel(ShotgunModel):
         :param field: The Shotgun field which the thumbnail is associated with.
         :param image: QImage object with the thumbnail loaded
         :param path: A path on disk to the thumbnail. This is a file in jpeg format.
- 
+
         this happens on model loading... so we store the incoming thumbnail away to use
         when we need to revert to original thumbnail.
         """

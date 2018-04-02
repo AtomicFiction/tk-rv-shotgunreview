@@ -62,7 +62,6 @@ class MiniCutWidget(QtGui.QDockWidget):
                 border: none;
                 background-color: rgb(15,15,15);
             }
-
         """
         self.setTitleBarWidget(None)
         self.setFeatures(QtGui.QDockWidget.NoDockWidgetFeatures)

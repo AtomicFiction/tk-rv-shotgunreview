@@ -1,20 +1,20 @@
 /*
 Copyright (c) 2016 Shotgun Software Inc.
- 
+
 CONFIDENTIAL AND PROPRIETARY
 
-This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 Source Code License included in this distribution package. See LICENSE.
-By accessing, using, copying or modifying this work you indicate your 
-agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+By accessing, using, copying or modifying this work you indicate your
+agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 not expressly granted therein are reserved by Shotgun Software Inc.
 
 */
 
-QWidget { 
-    font-family: Proxima Nova; 
-    background: rgb(37,38,41); 
-    color: rgb(126,127,129); 
+QWidget {
+    font-family: Proxima Nova;
+    background: rgb(37,38,41);
+    color: rgb(126,127,129);
     border-color: rgb(37,38,41);
     margin: 0px;
     padding: 0px;
@@ -34,10 +34,6 @@ ShotgunMenu {
 
 ShotgunMenu QLabel {
     background-color: rgb(50, 50, 50);
-}
-
-QTreeView {
-    border: 0px solid rgb(0,0,200);
 }
 
 QFrame {
@@ -93,7 +89,7 @@ QListView:item {
 }
 
 #tray_list {
-    background: rgb(37,38,41); 
+    background: rgb(37,38,41);
     border: 0px solid rgb(37,38,41);
     margin: 0px;
     padding: 0px;

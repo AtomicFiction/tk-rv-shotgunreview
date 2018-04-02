@@ -37,14 +37,6 @@ class TrayWidget(QtGui.QWidget):
         self.hintSize = None
         self.parent = parent
 
-        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.customContextMenuRequested.connect(self._foo)
-
-    def _foo(self, *args, **kwargs):
-        print 'foo!!'
-        print args
-        print kwargs
-
     def set_actions(self, actions):
         """
         Adds a list of QActions to add to the actions menu for this widget.
@@ -59,7 +51,6 @@ class TrayWidget(QtGui.QWidget):
             self.ui.thumbnail.setStyleSheet("QLabel { border: 2px solid rgb(40,136,175); }")
         else:
             self.ui.thumbnail.setStyleSheet("QLabel { border: 0px solid rgb(37,38,41); }")
-
 
     def set_thumbnail(self, pixmap):
         """
