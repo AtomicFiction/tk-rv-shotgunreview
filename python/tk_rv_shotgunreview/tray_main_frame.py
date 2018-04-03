@@ -270,5 +270,42 @@ class TrayMainFrame(QtGui.QFrame):
         self.version_search_menu.setStyleSheet("QTreeView { color: rgb(125, 126, 127) } "
                                                "QTreeView::item {color: rgb(125, 126, 127) }")
 
+        # utilized by _show_version_search() to offset QCursor.pos so we can
+        # ensure the whole version search menu appears where the user can
+        # see it
+        desktop = QtGui.QDesktopWidget()
+        self._screen_height = desktop.height()
+        self._screen_width = desktop.width()
+
     def _show_version_search(self, q_point):
-        self.version_search_menu.exec_(QtGui.QCursor.pos())
+
+        current_cursor_pos = QtGui.QCursor.pos()
+
+        curr_y = current_cursor_pos.y()
+        curr_x = current_cursor_pos.x()
+
+        # propsed y and x max represent the bottom corners of the menu
+        # as it would be drawn; we'll check these coordinates against the
+        # current screen size + cursor position to ensure that the menu
+        # won't be partially drawn off screen
+        proposed_max_y = curr_y + 500
+        proposed_max_x = curr_x + 500
+
+        # if either proposed coordinate is past the bottom or right hand
+        # side of the screen, then offset it by the difference between the
+        # screen edge and the end of the widget (leaving a few pixels between
+        # the end of the widget and the screen border)
+        if proposed_max_y > self._screen_height:
+            y_offset = proposed_max_y - self._screen_height
+            y = (curr_y - y_offset) + 10
+        else:
+            y = curr_y
+
+        if proposed_max_x > self._screen_width:
+            x_offset = proposed_max_x - self._screen_width
+            x = (curr_x - x_offset) + 10
+        else:
+            x = curr_x
+
+        menu_pos = QtCore.QPoint(x, y)
+        self.version_search_menu.exec_(menu_pos)

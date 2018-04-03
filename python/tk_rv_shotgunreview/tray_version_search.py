@@ -86,9 +86,11 @@ class VersionSearchMenu(QtGui.QMenu):
         TODO:
         - Automatically expand all tree contents when data reloads?
         - Set menu size based on model contents
-        - Offset menu position when in fullscreen, so menu isn't lost off screen
         - Do we need to deal with users wanting sg_frames instead of sg_path_to_movie?
         - When searching via proxy, hide tree items that have no children
+        - Figure out what's generating the 'layout already set' errors
+        - Reverse order of versions in UI, hide same steps that pipeline step
+          dropdown is hiding
         '''
 
     def _connect_signals(self):
