@@ -367,6 +367,8 @@ class RvActivityMode(rvt.MinorMode):
                 sm.select(sel_index, sm.ClearAndSelect)
                 self.tray_list.scrollTo(sel_index, QtGui.QAbstractItemView.PositionAtCenter)
 
+                self._popup_utils.refresh_version_search_menu()
+
         except Exception as e:
             print "ERROR: RV frameChanged EXCEPTION %r" % e
 
@@ -1259,6 +1261,7 @@ class RvActivityMode(rvt.MinorMode):
         self.tray_proxyModel = self.tray_main_frame.tray_proxyModel
         self.tray_delegate = self.tray_main_frame.tray_delegate
         self.tray_list = self.tray_main_frame.tray_list
+        self.tray_vers_search = self.tray_main_frame.version_search_widget
         self.tray_button_entire_cut = self.tray_main_frame.tray_button_entire_cut
         self.tray_button_mini_cut = self.tray_main_frame.tray_button_mini_cut
         self.tray_button_browse_cut = self.tray_main_frame.tray_button_browse_cut

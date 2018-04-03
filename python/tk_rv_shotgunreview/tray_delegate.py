@@ -85,9 +85,6 @@ class RvTrayDelegate(shotgun_view.WidgetDelegate):
         d = { 'rv_cut_selected': item.row() }
         item.setData(d, self._RV_DATA_ROLE)
 
-        print 'handle clicked!!'
-        print 'item:', item
-
         # self.tray_view.selectionModel().clear()
         #self.tray_view.model().invalidate()
         #self.tray_view.update(action)

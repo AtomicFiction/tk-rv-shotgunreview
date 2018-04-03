@@ -107,6 +107,28 @@ class PopupUtils(QtCore.QObject):
     #     self._preset_pipeline = True
     #     self.check_pipeline_menu()
 
+    def refresh_version_search_menu(self):
+        print 'refreshing search menu'
+        print self._tray_frame.version_search_widget
+        tray_filters = self.get_tray_filters()
+
+        version_data = self._rv_mode.version_data_from_source()
+        if not version_data.get('entity'):
+            return
+
+        filters = [['project', 'is', self._project_entity],
+                   ['entity', 'is', version_data.get('entity')]]
+
+        self._tray_frame.version_search_widget.version_model._load_data('Version',
+                                                                        filters,
+                                                                        ['sg_step', 'code'],
+                                                                        ['type'])
+
+        self._tray_frame.version_search_widget.version_model._refresh_data()
+
+        self._tray_frame.version_search_widget._version_proxy.invalidateFilter()
+        self._tray_frame.version_search_widget._version_proxy.setFilterWildcard('*')
+
     def find_rel_cuts_with_model(self, entity_in, shot_entity=None):
         """
         This initiates two queries, one for all related cuts, and the other

@@ -33,6 +33,7 @@ class TrayMainFrame(QtGui.QFrame):
         self.tray_list = None
         self.tray_delegate = None
         self.tray_proxyModel = None
+        self.version_search_widget = None
 
         self._rv_mode = rv_mode
         # using the new singleton bg manager
@@ -262,10 +263,9 @@ class TrayMainFrame(QtGui.QFrame):
         self.tray_list.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.tray_list.customContextMenuRequested.connect(self._show_version_search)
 
+        self.version_search_widget = version_search.VersionSearchMenu(self)
+        self.version_search_widget.setStyleSheet("QTreeView { color: rgb(125, 126, 127) } "
+                                                 "QTreeView::item {color: rgb(125, 126, 127) }")
+
     def _show_version_search(self, q_point):
-        version_search_widget = version_search.VersionSearchMenu(self)
-
-        version_search_widget.setStyleSheet("QTreeView { color: rgb(125, 126, 127) } "
-                                            "QTreeView::item {color: rgb(125, 126, 127) }")
-
-        version_search_widget.exec_(QtGui.QCursor.pos())
+        self.version_search_widget.exec_(QtGui.QCursor.pos())
