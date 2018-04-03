@@ -297,13 +297,13 @@ class TrayMainFrame(QtGui.QFrame):
         # the end of the widget and the screen border)
         if proposed_max_y > self._screen_height:
             y_offset = proposed_max_y - self._screen_height
-            y = (curr_y - y_offset) + 10
+            y = (curr_y - y_offset) - 10
         else:
             y = curr_y
 
         if proposed_max_x > self._screen_width:
             x_offset = proposed_max_x - self._screen_width
-            x = (curr_x - x_offset) + 10
+            x = (curr_x - x_offset) - 10
         else:
             x = curr_x
 
