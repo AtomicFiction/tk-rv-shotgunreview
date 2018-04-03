@@ -14,6 +14,7 @@ from .filtered_versions_model import FilteredVersionsModel
 from .steps_sort_filter import StepsSortFilter
 
 import rv.extra_commands as rve
+import rv.commands
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -108,8 +109,6 @@ class PopupUtils(QtCore.QObject):
     #     self.check_pipeline_menu()
 
     def refresh_version_search_menu(self):
-        print 'refreshing search menu'
-        print self._tray_frame.version_search_widget
         tray_filters = self.get_tray_filters()
 
         version_data = self._rv_mode.version_data_from_source()
@@ -119,12 +118,17 @@ class PopupUtils(QtCore.QObject):
         filters = [['project', 'is', self._project_entity],
                    ['entity', 'is', version_data.get('entity')]]
 
-        self._tray_frame.version_search_widget.version_model._load_data('Version',
-                                                                        filters,
-                                                                        ['sg_step', 'code'],
-                                                                        ['type'])
+        filters.append(self._tray_frame.version_search_widget.FILTERS)
 
-        self._tray_frame.version_search_widget.version_model._refresh_data()
+        fields = self._tray_frame.version_search_widget.FIELDS
+
+        model = self._tray_frame.version_search_widget.version_model
+        model._load_data('Version',
+                         filters,
+                         ['sg_step', 'code'],
+                         fields)
+
+        model._refresh_data()
 
         self._tray_frame.version_search_widget._version_proxy.invalidateFilter()
         self._tray_frame.version_search_widget._version_proxy.setFilterWildcard('*')

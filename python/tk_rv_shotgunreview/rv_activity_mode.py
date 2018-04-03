@@ -299,6 +299,7 @@ class RvActivityMode(rvt.MinorMode):
             print "ERROR: replaceWithSelected %r" % e
 
     def swapIntoSequence(self, event):
+
         s = copy.copy(event.contents())
         try:
             v = json.loads(s)
@@ -1283,6 +1284,7 @@ class RvActivityMode(rvt.MinorMode):
         self.tray_model.cache_loaded.connect(self.on_cache_loaded)
         self.tray_list.clicked.connect(self.tray_clicked)
         self.tray_list.doubleClicked.connect(self.tray_double_clicked)
+        self.tray_vers_search.version_selected.connect(self._swap_into_sequence)
 
         self.tray_main_frame.mc_widget.widget.mini_right_spinner.valueChanged.connect(self.right_spinner_clicked)
         self.tray_main_frame.mc_widget.widget.mini_left_spinner.valueChanged.connect(self.left_spinner_clicked)
