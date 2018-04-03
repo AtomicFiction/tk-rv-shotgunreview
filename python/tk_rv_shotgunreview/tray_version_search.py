@@ -46,7 +46,8 @@ class VersionSearchMenu(QtGui.QMenu):
               'sg_movie_has_slate',
               'entity']
 
-    FILTERS = ['sg_path_to_movie', 'is_not', None]
+    FILTERS = [['sg_path_to_movie', 'is_not', None],
+               ['sg_step.Step.sg_hide_from_sg_review', 'is_not', True]]
 
     def __init__(self, parent=None, engine=None):
         QtGui.QMenu.__init__(self, parent)
@@ -55,10 +56,9 @@ class VersionSearchMenu(QtGui.QMenu):
         self._connect_signals()
 
     def _init_ui(self):
-
-        self._main_layout = QtGui.QVBoxLayout(self)
-        self._search_layout = QtGui.QHBoxLayout(self)
-        self._version_layout = QtGui.QHBoxLayout(self)
+        self._main_layout = QtGui.QVBoxLayout()
+        self._search_layout = QtGui.QHBoxLayout()
+        self._version_layout = QtGui.QHBoxLayout()
 
         self._search_widget = search_widget.SearchWidget(self)
         self._search_layout.addWidget(self._search_widget)
@@ -83,14 +83,11 @@ class VersionSearchMenu(QtGui.QMenu):
         self.setMinimumHeight(500)
 
         '''
-        TODO:
-        - Automatically expand all tree contents when data reloads?
+        Maybe #TODO pending user feedback:
+        - Automatically expand all tree contents when data reloads
         - Set menu size based on model contents
         - Do we need to deal with users wanting sg_frames instead of sg_path_to_movie?
         - When searching via proxy, hide tree items that have no children
-        - Figure out what's generating the 'layout already set' errors
-        - Reverse order of versions in UI, hide same steps that pipeline step
-          dropdown is hiding
         '''
 
     def _connect_signals(self):
@@ -111,6 +108,9 @@ class VersionSearchMenu(QtGui.QMenu):
         item = self.version_model.itemFromIndex(self._version_proxy.mapToSource(event))
         sg_data = item.get_sg_data()
 
+        if not sg_data:
+            return
+
         # since this is only being used in tk-rv-shotgunreview, we want to leverage
         # that plugin's existing _swap_into_sequence, which expects to receive
         # a list of versions; so we'll emit a list, even though we only have one
@@ -127,7 +127,7 @@ class VersionSearchMenu(QtGui.QMenu):
             model only loads versions from the correct show/entity.
         """
 
-        version_filters = filters.append(self.FILTERS)
+        version_filters = filters.extend(self.FILTERS)
 
         self.version_model._load_data('Version',
                                       filters,
@@ -138,3 +138,4 @@ class VersionSearchMenu(QtGui.QMenu):
 
         self._version_proxy.invalidateFilter()
         self._version_proxy.setFilterWildcard('*')
+        self._version_proxy.sort(0, QtCore.Qt.DescendingOrder)
