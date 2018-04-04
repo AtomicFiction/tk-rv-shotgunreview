@@ -107,6 +107,25 @@ class PopupUtils(QtCore.QObject):
     #     self._preset_pipeline = True
     #     self.check_pipeline_menu()
 
+    def refresh_version_search_menu(self):
+        """
+        Refresh the contents of the VersionSearchMenu in the cuts tray,
+        so that it only displays Versions from the source that is
+        currently being viewed.
+        """
+
+        version = self._rv_mode.version_data_from_source()
+
+        # shouldn't happen, but just in case, skip updating the version
+        # search menu
+        if not version.get('entity'):
+            return
+
+        filters = [['project', 'is', self._project_entity],
+                   ['entity', 'is', version.get('entity')]]
+
+        self._tray_frame.version_search_menu.load(version, filters)
+
     def find_rel_cuts_with_model(self, entity_in, shot_entity=None):
         """
         This initiates two queries, one for all related cuts, and the other
