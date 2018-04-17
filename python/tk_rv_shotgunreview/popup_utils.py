@@ -121,8 +121,13 @@ class PopupUtils(QtCore.QObject):
         if not version.get('entity'):
             return
 
+        # only retrieve versions whose range matches that of the
+        # version currently being viewed, so that we can ensure it
+        # cuts in ok and doesn't cause a frame hold
         filters = [['project', 'is', self._project_entity],
-                   ['entity', 'is', version.get('entity')]]
+                   ['entity', 'is', version.get('entity')],
+                   ['sg_last_frame', 'is', version.get('sg_last_frame')],
+                   ['sg_first_frame', 'is', version.get('sg_first_frame')]]
 
         self._tray_frame.version_search_menu.load(version, filters)
 

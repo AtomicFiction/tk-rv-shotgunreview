@@ -1416,7 +1416,7 @@ class RvActivityMode(rvt.MinorMode):
         # version_data['entity'] has our shot.
         # drop this path into every item that has this shot
         if '__image_path' not in v_data:
-            self._app.engine.log_warning('no image path passed into update_pinned_thumbnail.')
+            self._app.engine.log_info('no image path passed into update_pinned_thumbnail.')
             return
 
         path = v_data['__image_path']

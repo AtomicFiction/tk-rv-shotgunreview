@@ -46,8 +46,16 @@ class VersionSearchMenu(QtGui.QMenu):
               'sg_movie_has_slate',
               'entity']
 
+    # by default, never retrieve versions that don't have a step,
+    # first/last frame, and/or path_to_movie set
+    # (a lack of path_to_movie or first/last frame will cause the version
+    # to not cut in correctly, and editorial requested to exclude any
+    # versions without a step)
     FILTERS = [['sg_path_to_movie', 'is_not', None],
-               ['sg_step.Step.sg_hide_from_sg_review', 'is_not', True]]
+               ['sg_step.Step.sg_hide_from_sg_review', 'is_not', True],
+               ['sg_first_frame', 'is_not', None],
+               ['sg_last_frame', 'is_not', None],
+               ['sg_step', 'is_not', None]]
 
     def __init__(self, parent=None, engine=None):
         QtGui.QMenu.__init__(self, parent)
@@ -117,6 +125,8 @@ class VersionSearchMenu(QtGui.QMenu):
         # version to swap in
         self.version_selected.emit([sg_data])
 
+        self.close()
+
     def load(self, version, filters):
         """
         Given a version, load associated versions into the VersionSearchMenu.
@@ -127,7 +137,7 @@ class VersionSearchMenu(QtGui.QMenu):
             model only loads versions from the correct show/entity.
         """
 
-        version_filters = filters.extend(self.FILTERS)
+        filters.extend(self.FILTERS)
 
         self.version_model._load_data('Version',
                                       filters,
