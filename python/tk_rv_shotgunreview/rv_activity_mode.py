@@ -2025,6 +2025,12 @@ class RvActivityMode(rvt.MinorMode):
 
         return source_name
 
+    def set_source_group_version_data(self, source_group, version_data):
+
+        setProp(source_group + ".sg_review.version_id",   version_data["id"])
+        setProp(source_group + ".sg_review.version_data", json.dumps(version_data))
+        setProp(source_group + ".sg_review.timestamp", int(time.time()) )
+
     def source_group_from_version_data(self, version_data, media_type=None):
 
         if False:
@@ -2086,9 +2092,7 @@ class RvActivityMode(rvt.MinorMode):
             self.createText(overlay_node + '.text:sg_review_error',
                     version_data["code"] + '\nhas no playable local media.', -0.5, 0.0)
 
-        setProp(source_group + ".sg_review.version_id",   version_data["id"])
-        setProp(source_group + ".sg_review.version_data", json.dumps(version_data))
-        setProp(source_group + ".sg_review.timestamp", int(time.time()) )
+        self.set_source_group_version_data(source_group, version_data)
 
         self.set_media_type_property(source_group, m_type)
 
@@ -2464,6 +2468,10 @@ class RvActivityMode(rvt.MinorMode):
             # Now we have version data, find or create the corresponding
             # RVSourceGroup
             src_group_or_proxy = self.find_source_group_or_proxy_from_version_data(version_data)
+
+            # Force refresh the version data on the source group (for ScreeningRoom versions)
+            if version_data['id'] not in self.proxy_sources:
+                self.set_source_group_version_data(src_group_or_proxy, version_data)
 
             # We now have edit_data and version_data and corresponding
             # (possibly proxy) source group.  If we are showing Versions (not
