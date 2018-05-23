@@ -2094,7 +2094,9 @@ class RvActivityMode(rvt.MinorMode):
 
         self.configure_source_media(source_group, version_data)
 
-        rve.setUIName(source_group, version_data.get("code", "No Version Name"))
+        rve.setUIName(source_group,
+                      '%s [%s]' % (version_data.get('code', 'No Version Name'),
+                                   version_data.get('sg_status_list', '')))
 
         # Make source backward compatible with ScreeningRoom
         prop = source_node + '.tracking.info'
