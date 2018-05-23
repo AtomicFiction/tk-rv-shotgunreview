@@ -2096,6 +2096,25 @@ class RvActivityMode(rvt.MinorMode):
 
         rve.setUIName(source_group, version_data.get("code", "No Version Name"))
 
+        # Make source backward compatible with ScreeningRoom
+        prop = source_node + '.tracking.info'
+        if not rvc.propertyExists(prop):
+            as_list = ['type', 'Version', 'id', str(version_data['id'])]
+            rvc.newProperty(prop, rv.commands.StringType, 1)
+            rvc.setStringProperty(prop, as_list, True)
+
+            mu_cmd = '''
+            {
+                require shotgun_mode;
+                require shotgun_fields;
+
+                let sources = string[]("%s"),
+                    ids = int[](%s);
+                shotgun_mode.theMode()._shotgunState.collectVersionInfo(ids, shotgun_fields.updateSourceInfo(sources, ));
+            }
+            ''' % (source_node, version_data['id'])
+            rv.runtime.eval(mu_cmd, [])
+
         return source_group
 
     def sequence_data_from_query_item(self, sg_item, target_entity):
