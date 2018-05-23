@@ -1007,10 +1007,10 @@ class RvActivityMode(rvt.MinorMode):
                 ('launch-submit-tool', self.launch_submit_tool, ''),
                 ('submit-tool-submission-complete', self.version_submitted, ''),
                 # Shortcuts:
-                ('key-down--alt--d', self.toggle_view_details, ''),
-                ('key-down--alt--t', self.toggle_view_tray, ''),
-                ('key-down--alt--c', self.cuts_button_pushed_event, ''),
-                ('key-down--alt--m', self.mini_cut_mode_toggle, ''),
+                ('key-down--alt--D', self.toggle_view_details, ''),
+                ('key-down--alt--T', self.toggle_view_tray, ''),
+                #('key-down--alt--c', self.cuts_button_pushed_event, ''),
+                #('key-down--alt--m', self.mini_cut_mode_toggle, ''),
                 ],
                 [("SG Review", [
                     ("Get Help ...", self.getHelp, None, lambda: rvc.UncheckedMenuState),
@@ -1031,8 +1031,8 @@ class RvActivityMode(rvt.MinorMode):
 
                     ("_", None),
                     ("View", None, None, lambda: rvc.DisabledMenuState),
-                    ("    Details Pane",       self.toggle_view_details, "alt d", self.view_state_details),
-                    ("    Thumbnail Timeline", self.toggle_view_tray,    "alt t", self.view_state_tray),
+                    ("    Details Pane",       self.toggle_view_details, "alt D", self.view_state_details),
+                    ("    Thumbnail Timeline", self.toggle_view_tray,    "alt T", self.view_state_tray),
 
                     ("_", None),
                     ("Submit Tool", self.launch_submit_tool, None, lambda: rvc.UncheckedMenuState),
