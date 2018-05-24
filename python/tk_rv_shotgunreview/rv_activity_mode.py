@@ -1010,7 +1010,7 @@ class RvActivityMode(rvt.MinorMode):
                 ('key-down--alt--D', self.toggle_view_details, ''),
                 ('key-down--alt--T', self.toggle_view_tray, ''),
                 #('key-down--alt--c', self.cuts_button_pushed_event, ''),
-                #('key-down--alt--m', self.mini_cut_mode_toggle, ''),
+                ('key-down--alt--m', self.mini_cut_mode_toggle, ''),
                 ],
                 [("SG Review", [
                     ("Get Help ...", self.getHelp, None, lambda: rvc.UncheckedMenuState),
