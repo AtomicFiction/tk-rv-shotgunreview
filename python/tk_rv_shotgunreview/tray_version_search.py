@@ -43,6 +43,7 @@ class VersionSearchMenu(QtGui.QMenu):
 
     FIELDS = ['sg_uploaded_movie_frame_rate',
               'sg_first_frame',
+              'sg_last_frame',
               'sg_movie_has_slate',
               'entity']
 

@@ -11,7 +11,7 @@ class FilteredVersionsModel(ShotgunModel):
 
     def __init__(self, parent, bg_task_manager=None, tray_model=None):
 
-        ShotgunModel.__init__(self, 
+        ShotgunModel.__init__(self,
                   parent = parent,
                   download_thumbs = True,
                   schema_generation = 0,
@@ -27,6 +27,7 @@ class FilteredVersionsModel(ShotgunModel):
         filters = filters or []
         fields = fields or ["code"]
         hierarchy = hierarchy or [fields[0]]
+
         ShotgunModel._load_data(self, entity_type, filters, hierarchy, fields, order, None, None, None, additional_filter_presets)
         self._refresh_data()
 
@@ -148,7 +149,7 @@ class FilteredVersionsModel(ShotgunModel):
         # the default implementation sets the icon
         # XXX does not get called... but if it does...
         self._tray_model.swap_in_thumbnail(item, field, image, path)
- 
+
     def _populate_thumbnail_image(self, item, field, image, path):
         """
         Similar to :meth:`_populate_thumbnail()` but this method is called instead
