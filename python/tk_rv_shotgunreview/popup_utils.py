@@ -973,11 +973,16 @@ class PopupUtils(QtCore.QObject):
             self._filtered_versions_model.clear()
             self._filtered_versions_model.data_refreshed.emit(True)
             return
+
         version_fields = ["image"] + required_version_fields
         version_filter_presets = [
                 {"preset_name": "LATEST", "latest_by": "BY_PIPELINE_STEP_NUMBER_AND_ENTITIES_CREATED_AT" }
             ]
 
-        self._filtered_versions_model.load_data(entity_type='Version', filters=full_filters,
-            fields=version_fields, additional_filter_presets=version_filter_presets)
+        full_filters.append(['sg_path_to_movie', 'is_not', None])
+
+        self._filtered_versions_model.load_data(entity_type='Version',
+                                                filters=full_filters,
+                                                fields=version_fields,
+                                                additional_filter_presets=version_filter_presets)
 
