@@ -125,12 +125,12 @@ class PopupUtils(QtCore.QObject):
             (within a list, to pass to rv_activity_mode._compare_with_current)
         """
 
-
         filters = [['project', 'is', self._project_entity],
                    ['entity', 'is', version.get('entity')],
                    ['sg_step.Step.short_name', 'is', step],
                    ['sg_last_frame', 'is', version.get('sg_last_frame')],
-                   ['sg_first_frame', 'is', version.get('sg_first_frame')]]
+                   ['sg_first_frame', 'is', version.get('sg_first_frame')],
+                   ['sg_path_to_movie', 'is_not', None]]
 
         if layer:
             filters.append(['sg_layer', 'is', layer])
