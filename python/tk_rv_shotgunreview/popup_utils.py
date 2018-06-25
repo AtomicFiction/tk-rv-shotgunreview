@@ -18,6 +18,9 @@ import rv.extra_commands as rve
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
+import afpipe.sg
+SG = afpipe.sg.SG()
+
 # XXX not sure how to share this? copied from the mode
 required_version_fields = [
     "code",
@@ -106,6 +109,67 @@ class PopupUtils(QtCore.QObject):
     # def mark_pipeline_selections(self):
     #     self._preset_pipeline = True
     #     self.check_pipeline_menu()
+
+    def retrieve_versions_for_compare(self, version, step, layer=None,
+                                      greatest=None, stc=False):
+        """Given a particular input version, find another version to compare
+        that version with.
+
+        :param version dict: Version entity.
+        :param step str: Step to use when searching for comparison versions.
+        :param layer str: Layer to use when searching for comparison versions.
+        :param greatest bool: Whether comparison versions must be greatest.
+        :param stc bool: Whether comparison versions must have been sent to client.
+
+        :returns [version]: Version entity to compare the input version to.
+            (within a list, to pass to rv_activity_mode._compare_with_current)
+        """
+
+        filters = [['project', 'is', self._project_entity],
+                   ['entity', 'is', version.get('entity')],
+                   ['sg_step.Step.short_name', 'is', step],
+                   ['sg_last_frame', 'is', version.get('sg_last_frame')],
+                   ['sg_first_frame', 'is', version.get('sg_first_frame')],
+                   ['sg_path_to_movie', 'is_not', None]]
+
+        if layer:
+            filters.append(['sg_layer', 'is', layer])
+
+        if greatest:
+            filters.append(['sg_greatest', 'is', True])
+
+        if stc:
+            # statuses which are under a version's 'sg_status_list' field
+            # (legacy support for old version statuses); new style version
+            # status stores 'stc' in the sg_delivery_status field on the Version
+            old_stc_statuses = ["stc", "apr", "fin", "fp2k"]
+
+            stc_filter = {'filter_operator': 'any',
+                          'filters': [['sg_delivery_status', 'is', 'stc'],
+                                      {'filter_operator': 'all',
+                                       'filters': [['sg_delivery_status', 'is', None],
+                                                   ['sg_status_list', 'in', old_stc_statuses]]}]
+                         }
+
+            filters.append(stc_filter)
+
+        fields = ['sg_uploaded_movie_frame_rate',
+                  'sg_first_frame',
+                  'sg_movie_has_slate',
+                  'sg_path_to_movie',
+                  'sg_path_to_frames'
+                  'entity']
+
+        compare_version = SG.find_one('Version', filters, fields,
+            order=[{'field_name': 'created_at', 'direction':'desc'}])
+
+        # avoid returning [None] when compare_version is None, because
+        # an empty list of None still returns True when checking
+        # 'if [None]'
+        if not compare_version:
+            return
+
+        return [compare_version]
 
     def refresh_version_search_menu(self):
         """

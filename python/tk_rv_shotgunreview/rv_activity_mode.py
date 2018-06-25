@@ -1067,6 +1067,70 @@ class RvActivityMode(rvt.MinorMode):
                 )],
                 None)
 
+        # anim
+        rv.commands.bind("RvActivityMode", "global", "key-down--A",
+                         self.compare("anim"), "Latest Anim")
+
+        # plate; falls back to v000 if no appropriate plate is found
+        rv.commands.bind("RvActivityMode", "global", "key-down--P",
+                         self.compare("plate",
+                                      layer="plt01",
+                                      fallback_step="v000",
+                                      fallback_layer="output"),
+                         "Latest Plate")
+
+        rv.commands.bind("RvActivityMode", "global", "key-down--alt--P",
+                         self.compare("plate",
+                                      layer="plt01",
+                                      greatest=True,
+                                      fallback_step="v000",
+                                      fallback_layer="output"),
+                         "Greatest Plate")
+
+        # v0000
+        rv.commands.bind("RvActivityMode", "global", "key-down--V",
+                         self.compare("v000", layer="output"),
+                         "Latest v000")
+
+        rv.commands.bind("RvActivityMode", "global", "key-down--alt--V",
+                         self.compare("v000",
+                                      layer="output",
+                                      greatest=True),
+                         "Greatest v000")
+
+        rv.commands.bind("RvActivityMode", "global", "key-down--alt--v",
+                         self.compare("v000",
+                                      layer="output",
+                                      stc=True),
+                         "Sent to Client v000")
+
+        # layout
+        rv.commands.bind("RvActivityMode", "global", "key-down--L",
+                         self.compare("assembly"), "Latest Layout")
+
+        # comp
+        rv.commands.bind("RvActivityMode", "global", "key-down--K",
+                         self.compare("comp"), "Latest Comp")
+
+        rv.commands.bind("RvActivityMode", "global", "key-down--alt--k",
+                         self.compare("comp", stc=True),
+                         "Sent to Client Comp")
+
+        # paint
+        rv.commands.bind("RvActivityMode", "global", "key-down--U",
+                         self.compare("paint", layer='plt01_output'),
+                         "Latest Paint")
+
+        # neutral grade
+        rv.commands.bind("RvActivityMode", "global", "key-down--N",
+                         self.compare("neutralgrade", layer='output'),
+                         "Latest NeutralGrade Output")
+
+        # shotref
+        rv.commands.bind("RvActivityMode", "global", "key-down--alt--i",
+                         self.compare("cutref"),
+                         "Latest Shotref")
+
     def activate(self):
         rvt.MinorMode.activate(self)
 
@@ -2914,6 +2978,53 @@ class RvActivityMode(rvt.MinorMode):
                 # self.tray_list.scrollTo(index, QtGui.QAbstractItemView.EnsureVisible)
 
         self.tray_list.repaint()
+
+    def compare(self, step, layer=None, greatest=None, fallback_step=None,
+                       fallback_layer=None, stc=False):
+
+        # TODO: Add overlay msg if fallback step is used?
+
+        def function(event):
+
+            source_version = self.version_data_from_source()
+            versions = self._popup_utils.retrieve_versions_for_compare(source_version,
+                                                                       step,
+                                                                       layer=layer,
+                                                                       greatest=greatest,
+                                                                       stc=stc)
+
+            if not versions and not fallback_step and not fallback_layer:
+                print 'No versions found to compare.'
+                return
+
+            # we got something to compare with, so go ahead and do that
+            if versions:
+                self._compare_with_current(versions)
+                return
+
+            # not enough info to attempt fallback
+            if not fallback_step or not fallback_layer:
+                msg = ('Can only attempt fallback with both fallback '
+                       'step and layer provided.')
+                print msg
+                return
+
+            print 'Attempting step fallback.'
+            # otherwise, no version was found, but a fallback step was provided,
+            # so check for a version from the fallback step
+            versions = self._popup_utils.retrieve_versions_for_compare(source_version,
+                                                                       fallback_step,
+                                                                       layer=fallback_layer,
+                                                                       greatest=greatest,
+                                                                       stc=stc)
+
+            if not versions:
+                print 'No appropriate fallback version found.'
+                return
+
+            self._compare_with_current(versions)
+
+        return function
 
     ##########################################################################
     # version list actions
